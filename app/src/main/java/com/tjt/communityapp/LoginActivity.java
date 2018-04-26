@@ -17,7 +17,7 @@ public class LoginActivity extends AppCompatActivity {
 
     public void tempLogin(View view){
         App.singleton.easyToast("Logging in!");
-        App.singleton.changeActivity(NavigationActivity.class);
+        App.singleton.setActivity(MainActivity.class);
     }
 
 }

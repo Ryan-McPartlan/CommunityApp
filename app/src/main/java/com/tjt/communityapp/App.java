@@ -23,7 +23,7 @@ public class App extends Application{
         Toast.makeText(this, message, Toast.LENGTH_LONG).show();
     }
 
-    public void changeActivity(Class activity){
+    public void setActivity(Class activity){
         Intent intent = new Intent(this, activity);
         startActivity(intent);
     }

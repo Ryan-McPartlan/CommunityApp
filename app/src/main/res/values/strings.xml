@@ -1,9 +1,23 @@
 <resources>
-    <string name="app_name">CommunityApp</string>
-    <string name="title_activity_navigation">NavigationActivity</string>
 
+    <!--GENERAL-->
+    <string name="app_name">CommunityApp</string>
+    <string name="title_activity_navigation">Main Activity</string>
+
+    <!--Nav Drawer-->
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
+    <!--LOGIN-->
+
+    <!--MAPS-->
+    <string name="title_activity_maps">Maps Activity</string>
+
+    <!--PERSONAL PAGE-->
+    <string name="title_activity_personal">My Page</string>
+
+    <!--OPTIONS-->
+    <string name="title_activity_options">Options</string>
     <string name="action_settings">Settings</string>
+
 </resources>
