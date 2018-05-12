@@ -4,7 +4,7 @@
     <!-- This is the rectangle on the top of the nav bar-->
     <gradient
         android:angle="135"
-        android:endColor="@color/colorPrimaryDark"
+        android:endColor="@color/colorPrimaryDark2"
         android:startColor="@color/colorPrimary"
         android:type="linear" />
 </shape>

@@ -1,10 +1,10 @@
 package com.tjt.communityapp;
 
+import android.app.Fragment;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.view.menu.MenuView;
-import android.text.Layout;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -12,10 +12,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.Menu;
 import android.view.MenuItem;
-
-import java.util.Map;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
 
@@ -26,6 +23,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         navBarSetup();
+        changeFragment(new MapActivity());
     }
 
     //Setup the navbar. Must be called by all navActivies after they set their content view
@@ -70,13 +68,20 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         drawer.closeDrawer(GravityCompat.START);
 
         if (id == R.id.nav_maps) {
-            App.singleton.setActivity(MapActivity.class);
+            changeFragment(new MapActivity());
         } else if (id == R.id.nav_personal) {
-            App.singleton.setActivity(PersonalPageActivity.class);
+            changeFragment(new PersonalPageActivity());
         } else if (id == R.id.nav_options) {
-            App.singleton.setActivity(OptionsActivity.class);
+            changeFragment(new OptionsActivity());
         }
 
         return true;
+    }
+
+    private void changeFragment(Fragment fragment){
+        FragmentManager fragmentManager = getFragmentManager();
+        FragmentTransaction ft = fragmentManager.beginTransaction();
+        ft.replace(R.id.content_frame, fragment);
+        ft.commit();
     }
 }

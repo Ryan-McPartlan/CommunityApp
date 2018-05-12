@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mainLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.tjt.communityapp.LoginActivity">
@@ -19,11 +21,13 @@
         <EditText
             android:id="@+id/enterEmail"
             style="@style/defaultStyle"
+            android:inputType="textEmailAddress"
             android:hint="Email"/>
 
         <EditText
             android:id="@+id/enterPassword"
             style="@style/defaultStyle"
+            android:inputType="textPassword"
             android:hint="Password"/>
 
         <Button
@@ -33,7 +37,13 @@
 
         <Button
             style="@style/defaultStyle"
-            android:text="Register"/>
+            android:text="Register"
+            android:onClick="register"/>
+
+        <Button
+            style="@style/defaultStyle"
+            android:text="Forgot Password"
+            android:onClick="forgotPassword"/>
 
     </LinearLayout>
 
