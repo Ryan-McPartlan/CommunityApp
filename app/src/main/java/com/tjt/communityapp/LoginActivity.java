@@ -84,12 +84,10 @@ public class LoginActivity extends AppCompatActivity {
         App.s.setActivity(RegisterActivity.class);
     }
 
+    //Show the forgot Password dialog
     public void forgotPassword(View view){
-        App.s.snackbar(findViewById(R.id.mainLayout), "Test snacky wacky!");
-
         ForgotPasswordDialog forgotPassDialog = new ForgotPasswordDialog();
-        FragmentTransaction ft = getFragmentManager().beginTransaction();
-        forgotPassDialog.show(ft, "forgotPassDialog");
+        App.s.dialog(forgotPassDialog, this);
     }
 
 }

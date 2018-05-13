@@ -5,7 +5,8 @@
         <item
             android:id="@+id/nav_maps"
             android:icon="@drawable/ic_map"
-            android:title="View Map" />
+            android:title="View Map"
+            android:checked="true"/>
         <item
             android:id="@+id/nav_personal"
             android:icon="@drawable/ic_person"

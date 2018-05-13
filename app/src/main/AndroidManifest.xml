@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+<manifest
+    xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.tjt.communityapp">
 
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <application
-        android:name=".App"
-        android:allowBackup="true"
+        android:name =".App"
+        android:allowBackup ="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
@@ -14,7 +16,6 @@
             android:theme="@style/LoginPage">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -22,14 +23,14 @@
             android:theme="@style/LoginPage">
         </activity>
         <!--
-        <activity android:name=".MapActivity"
+        <activity android:namMapFragmentvity"
             android:label="@string/title_activity_maps"
             android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity android:name=".RegisterActivity" />
-        <activity android:name=".PersonalPageActivity"
+        <activity android:namPersonalPageFragmentvity"
             android:label="@string/title_activity_personal"
             android:theme="@style/AppTheme.NoActionBar" ></activity>
-        <activity android:name=".OptionsActivity"
+        <activity android:namOptionsFragmentvity"
             android:label="@string/title_activity_options"
             android:theme="@style/AppTheme.NoActionBar" ></activity>
             -->
@@ -37,6 +38,11 @@
             android:name=".MainActivity"
             android:label="@string/title_activity_navigation"
             android:theme="@style/AppTheme.NoActionBar"></activity>
+
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyBKJRo-xttzmXcFOprfDEoFFFhfHGjyUAs"/>
+
     </application>
 
 </manifest>

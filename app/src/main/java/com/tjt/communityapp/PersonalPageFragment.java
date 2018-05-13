@@ -7,9 +7,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-public class PersonalPageActivity extends Fragment {
+public class PersonalPageFragment extends Fragment {
 
-    public PersonalPageActivity(){
+    public PersonalPageFragment(){
 
     }
 
