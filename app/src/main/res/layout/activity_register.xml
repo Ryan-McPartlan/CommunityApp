@@ -11,10 +11,11 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <TextView
+        <ImageView
             android:layout_width="match_parent"
-            style="@style/defaultStyle"
-            android:text="Register"/>
+            android:layout_height="100dp"
+            android:layout_marginTop="20dp"
+            android:src="@mipmap/ic_launcher_round"/>
 
         <EditText
             android:id="@+id/enterEmail"
@@ -35,7 +36,7 @@
             android:hint="Password"/>
 
         <Button
-            style="@style/defaultStyle"
+            style="@style/buttonStyle"
             android:text="Register!"
             android:onClick="register"/>
 

@@ -11,37 +11,44 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:weightSum="10">
 
-        <TextView
+        <ImageView
             android:layout_width="match_parent"
-            style="@style/defaultStyle"
-            android:text="Login"/>
+            android:layout_height="100dp"
+            android:layout_marginTop="20dp"
+            android:src="@mipmap/ic_launcher_round"/>
 
         <EditText
             android:id="@+id/enterEmail"
             style="@style/defaultStyle"
+            android:layout_weight="1.5"
             android:inputType="textEmailAddress"
             android:hint="Email"/>
 
         <EditText
             android:id="@+id/enterPassword"
             style="@style/defaultStyle"
+            android:layout_weight="1.5"
             android:inputType="textPassword"
             android:hint="Password"/>
 
         <Button
-            style="@style/defaultStyle"
+            style="@style/buttonStyle"
+            android:layout_weight="1"
             android:text="Log In"
             android:onClick="tempLogin"/>
 
         <Button
-            style="@style/defaultStyle"
+            style="@style/buttonStyle"
+            android:layout_weight="1"
             android:text="Register"
             android:onClick="register"/>
 
         <Button
-            style="@style/defaultStyle"
+            style="@style/buttonStyle"
+            android:layout_weight="1"
             android:text="Forgot Password"
             android:onClick="forgotPassword"/>
 
