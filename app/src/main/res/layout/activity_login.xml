@@ -25,20 +25,22 @@
             style="@style/defaultStyle"
             android:layout_weight="1.5"
             android:inputType="textEmailAddress"
-            android:hint="Email"/>
+            android:hint="Email"
+            android:text="ryanmcp45@gmail.com"/>
 
         <EditText
             android:id="@+id/enterPassword"
             style="@style/defaultStyle"
             android:layout_weight="1.5"
             android:inputType="textPassword"
-            android:hint="Password"/>
+            android:hint="Password"
+            android:text="11111111"/>
 
         <Button
             style="@style/buttonStyle"
             android:layout_weight="1"
             android:text="Log In"
-            android:onClick="tempLogin"/>
+            android:onClick="attemptLogin"/>
 
         <Button
             style="@style/buttonStyle"

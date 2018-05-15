@@ -6,40 +6,63 @@
     android:layout_height="match_parent"
     tools:context="com.tjt.communityapp.RegisterActivity">
 
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
-
-        <ImageView
+        android:layout_height="wrap_content">
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="100dp"
-            android:layout_marginTop="20dp"
-            android:src="@mipmap/ic_launcher_round"/>
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
-        <EditText
-            android:id="@+id/enterEmail"
-            style="@style/defaultStyle"
-            android:inputType="textEmailAddress"
-            android:hint="Email"/>
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:layout_marginTop="20dp"
+                android:src="@mipmap/ic_launcher_round"/>
 
-        <EditText
-            android:id="@+id/enterPassword"
-            style="@style/defaultStyle"
-            android:inputType="textPassword"
-            android:hint="Password"/>
+            <TextView
+                style="@style/defaultStyle"
+                android:text="An email adress you will use to login. We will not send you any emails."/>
 
-        <EditText
-            android:id="@+id/confirmPassword"
-            style="@style/defaultStyle"
-            android:inputType="textPassword"
-            android:hint="Password"/>
+            <EditText
+                android:id="@+id/enterEmail"
+                style="@style/defaultStyle"
+                android:inputType="textEmailAddress"
+                android:hint="Email"/>
 
-        <Button
-            style="@style/buttonStyle"
-            android:text="Register!"
-            android:onClick="register"/>
+            <TextView
+                style="@style/defaultStyle"
+                android:text="A name other members of your community will see. You can use your real name, or a screen name if you prefer to remain anonymous."/>
 
-    </LinearLayout>
+            <EditText
+                android:id="@+id/enterName"
+                style="@style/defaultStyle"
+                android:inputType="text"
+                android:hint="Name"/>
+
+            <TextView
+                style="@style/defaultStyle"
+                android:text="Create a password. \n8 character minimum."/>
+
+            <EditText
+                android:id="@+id/enterPassword"
+                style="@style/defaultStyle"
+                android:inputType="textPassword"
+                android:hint="Password"/>
+
+            <EditText
+                android:id="@+id/confirmPassword"
+                style="@style/defaultStyle"
+                android:inputType="textPassword"
+                android:hint="Confirm Password"/>
+
+            <Button
+                style="@style/buttonStyle"
+                android:text="Register!"
+                android:onClick="register"/>
+
+        </LinearLayout>
+
+    </ScrollView>
 
 </android.support.constraint.ConstraintLayout>

@@ -5,8 +5,55 @@
     android:layout_height="match_parent"
     tools:context="com.tjt.communityapp.PersonalPageFragment">
 
-    <TextView
-        style="@style/defaultStyle"
-        android:text="PERSONAL TEST"/>
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/userName"
+                style="@style/defaultStyle"
+                android:text="Name"/>
+
+            <ImageView
+                style="@style/defaultStyle"
+                android:src="@mipmap/ic_launcher"/>
+
+            <TextView
+                style="@style/defaultStyle"
+                android:text="Stats"/>
+
+            <TextView
+                android:id="@+id/memberSince"
+                style="@style/defaultStyle"/>
+
+            <TextView
+                android:id="@+id/serviceHours"
+                style="@style/defaultStyle"/>
+
+            <TextView
+                android:id="@+id/eventsAttended"
+                style="@style/defaultStyle"/>
+
+            <Button
+                android:id="@+id/viewEventLog"
+                style="@style/defaultStyle"
+                android:text="View event log"/>
+
+            <Switch
+                android:id="@+id/verifiedHoursOnly"
+                style="@style/defaultStyle"
+                android:text="Count only verified hours"/>
+
+            <TextView
+                style="@style/defaultStyle"
+                android:text="Badges"/>
+
+        </LinearLayout>
+    </ScrollView>
 
 </android.support.constraint.ConstraintLayout>

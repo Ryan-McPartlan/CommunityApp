@@ -25,19 +25,13 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
         App.s.toast("Welcome!");
 
-        EditText usernameView = findViewById(R.id.enterEmail);
-        EditText passwordView = findViewById(R.id.enterPassword);
-    }
-
-    //Test
-    public void tempLogin(View view){
-        App.s.toast("Logging in!");
-        App.s.setActivity(MainActivity.class);
+        usernameView = findViewById(R.id.enterEmail);
+        passwordView = findViewById(R.id.enterPassword);
     }
 
     //Logs us into firebase auth
     public void attemptLogin(View view){
-        App.s.progress("Verifying credentials...");
+        App.s.progress("Verifying credentials...", this);
 
         String username = usernameView.getText().toString();
         String password = passwordView.getText().toString();
@@ -59,7 +53,7 @@ public class LoginActivity extends AppCompatActivity {
     //If we successfully firebase login, get the user's info and move to the main menu
     public void login() {
         //Show the 'logging in' dialog box
-        App.s.progress("Getting user data...");
+        App.s.progress("Getting user data...", this);
 
         //Get the users account from firebase
         App.s.fDatabase.child("users/" + App.s.fAuth.getCurrentUser().getUid()).addListenerForSingleValueEvent(new ValueEventListener() {

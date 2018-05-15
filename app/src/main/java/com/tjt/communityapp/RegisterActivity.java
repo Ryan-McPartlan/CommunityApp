@@ -16,6 +16,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.sql.Time;
+import java.util.Date;
+
 public class RegisterActivity extends AppCompatActivity {
 
     EditText emailView;
@@ -34,26 +37,36 @@ public class RegisterActivity extends AppCompatActivity {
 
     public void register(View view){
         String email = emailView.getText().toString();
-        String password = emailView.getText().toString();
-        String passConfirm = emailView.getText().toString();
+        String password = passwordView.getText().toString();
+        String passConfirm = confirmPasswordView.getText().toString();
 
-        if(password == passConfirm){
+        if(!password.equals(passConfirm)){
+            App.s.toast("Passwords do not match!");
+        }
+        else if(password.length() < 8){
+            App.s.toast("Password must be at least 8 characters!");
+        }
+        else{
             App.s.fAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                 @Override
                 public void onComplete(@NonNull Task<AuthResult> task) {
                     if(task.isSuccessful()){
                         finishRegister();
                         login();
+                    } else{
+                        App.s.toast(task.getException().getMessage());
                     }
                 }
             });
-        } else{
-            App.s.toast("Passwords must match.");
         }
     }
 
     public void finishRegister(){
         User newUser = new User();
+        Date date = new Date();
+        newUser.registerDate = date.getTime();
+        EditText enterName = findViewById(R.id.enterName);
+        newUser.name = enterName.getText().toString();
 
         //Get a reference to the firebase database, and set it to newUser
         DatabaseReference userEntry = FirebaseDatabase.getInstance().getReference().child("users/" + App.s.fAuth.getCurrentUser().getUid());
@@ -63,7 +76,7 @@ public class RegisterActivity extends AppCompatActivity {
     //This function is copy-pasted from login. Very
     public void login() {
         //Show the 'logging in' dialog box
-        App.s.progress("Getting user data...");
+        App.s.progress("Getting user data...", this);
 
         //Get the users account from firebase
         App.s.fDatabase.child("users/" + App.s.fAuth.getCurrentUser().getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
