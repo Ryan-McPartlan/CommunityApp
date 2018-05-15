@@ -10,16 +10,17 @@ import android.view.ViewGroup;
  * Created by Ryan on 5/15/2018.
  */
 
-public class CommunitiesFragment extends Fragment {
+public class FiltersFragment extends Fragment {
 
-    public CommunitiesFragment(){
+    public FiltersFragment(){
 
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.content_communities, container, false);
+        View rootView = inflater.inflate(R.layout.content_filters, container, false); //TODO:
 
         return rootView;
     }
+
 }

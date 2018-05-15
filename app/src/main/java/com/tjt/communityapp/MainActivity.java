@@ -77,8 +77,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             changeFragment(new MapFragment());
         } else if (id == R.id.nav_personal) {
             changeFragment(new PersonalPageFragment());
-        } else if (id == R.id.nav_options) {
+        } else if (id == R.id.nav_communities) {
+        } else if (id == R.id.nav_filters) {
+        }else if (id == R.id.nav_options) {
             changeFragment(new OptionsFragment());
+        }else if (id == R.id.nav_news) {
+            changeFragment(new OptionsFragment());
+        }else if (id == R.id.nav_logout) {
+            App.s.logout();
         }
 
         return true;
