@@ -1,0 +1,32 @@
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <TextView
+                style="@style/defaultStyle"
+                android:text="Tell us your thoughts on the app, improvements that could be made, or bugs that you have come across"/>
+
+            <EditText
+                android:id="@+id/feedbackEditText"
+                style="@style/defaultStyle"
+                android:hint="Enter your feedback here!"/>
+
+            <Button
+                android:id="@+id/submitFeedbackButton"
+                style="@style/defaultStyle"
+                android:text="Submit"/>
+        </LinearLayout>
+    </ScrollView>
+
+
+</android.support.constraint.ConstraintLayout>

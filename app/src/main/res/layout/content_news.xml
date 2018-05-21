@@ -18,12 +18,12 @@
                 android:id="@+id/prevButton"
                 style="@style/defaultStyle"
                 android:layout_width="wrap_content"
-                android:text="Previous news"/>
+                android:text="Previous\nnews"/>
             <Button
                 android:id="@+id/nextButton"
                 style="@style/defaultStyle"
                 android:layout_width="wrap_content"
-                android:text="Next news"
+                android:text="Next\nnews"
                 android:enabled="false"/>
         </LinearLayout>
 

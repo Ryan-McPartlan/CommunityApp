@@ -40,7 +40,7 @@
             <DatePicker
                 android:id="@+id/createDate"
                 style="@style/defaultStyle"
-                android:datePickerMode="spinner"
+                android:datePickerMode="calendar"
                 android:calendarViewShown="false"/>
 
             <TextView

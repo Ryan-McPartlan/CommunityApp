@@ -21,8 +21,6 @@ public class CommunitiesFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.content_communities, container, false);
         getActivity().setTitle("Communities");
 
-
-
         return rootView;
     }
 }

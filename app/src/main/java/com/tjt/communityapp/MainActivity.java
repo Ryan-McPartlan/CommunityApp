@@ -86,6 +86,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             changeFragment(new OptionsFragment(), true);
         }else if (id == R.id.nav_news) {
             changeFragment(new NewsFragment(), true);
+        }else if (id == R.id.nav_feedback) {
+            changeFragment(new FeedbackFragment(), true);
         }else if (id == R.id.nav_logout) {
             App.s.logout();
         }

@@ -38,7 +38,9 @@ import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
@@ -46,7 +48,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
     private final int PERMISSION_FINE_LOCATION = 1;
     private int PIN_PLACE_MAX_DISTANCE = 15000; //The farthest we can place a pin, in meters
     private int PIN_PLACE_MIN_ZOOM = 15;
-    private int PIN_MIN_SPACING = 10;
+    private float PIN_MIN_SPACING = 15; //Meters
     public int MAX_ZOOM = 19;
     public int MIN_ZOOM = 5;
 
@@ -54,14 +56,13 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
 
     MapView mMapView;
     private GoogleMap gMap;
-    private GeoFire geoFire;
-
-    //For checking when we should findPins again
-    private LatLng lastUpdatePosition;
-    private float lastUpdateZoom;
 
     //Pins
-    private ArrayList<Pin> currentPins = new ArrayList<>();
+    private LatLng lastUpdatePosition;
+    private float lastUpdateZoom;
+    private boolean searchingForPins = false;
+    private int queriesInProgress;
+    private ArrayList<Marker> pins = new ArrayList<>();
     private ArrayList<Pin> newPins = new ArrayList<>();
 
     public MapFragment(){
@@ -71,9 +72,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.content_map, container, false);
         getActivity().setTitle("Map");
-
-        //Setup GeoFire
-        geoFire = new GeoFire(App.s.fDatabase.child("geoFire"));
 
         //Get the mapView
         mMapView = rootView.findViewById(R.id.map);
@@ -118,7 +116,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
 
         moveCameraToStartPosition();
     }
-
     private void moveCameraToStartPosition(){
         //If we have location permissions, look at the users location. Otherwise, start without location
         if (ContextCompat.checkSelfPermission(getActivity(), android.Manifest.permission.ACCESS_FINE_LOCATION)
@@ -140,36 +137,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
     }
     private void startWithoutLocation(){
         moveCam(40.93f, -73.8f, 8, false); //TODO: Prompt the user for a city or zip code.
-    }
-
-    private void getPins(){
-        lastUpdateZoom = gMap.getCameraPosition().zoom;
-        lastUpdatePosition = gMap.getCameraPosition().target;
-        GeoLocation queryLocation = new GeoLocation(lastUpdatePosition.latitude, lastUpdatePosition.longitude);
-
-        Log.d("MapUpdate", "Updating Pins");
-
-        //TODO: Geohash, get keys for all pins in the area and draw them
-        geoFire.queryAtLocation(queryLocation, mapSizeMeters(lastUpdateZoom) / 1000).addGeoQueryEventListener(new GeoQueryEventListener() {
-            @Override
-            public void onKeyEntered(String key, GeoLocation location) {
-
-            }
-
-
-            @Override
-            public void onGeoQueryReady() {
-
-            }
-
-            //Unused
-            @Override
-            public void onKeyExited(String key) {}
-            @Override
-            public void onKeyMoved(String key, GeoLocation location) {}
-            @Override
-            public void onGeoQueryError(DatabaseError error) {}
-        });
     }
 
     //Camera utilities
@@ -203,7 +170,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
         //The equator of the earth divided over the number of pixels it takes up at this zoom level
         double metersPerPixel = EQUATOR_METERS / totalPixels;
 
-        //The most pixels we see in one direction, t
+        //The most pixels we see in one direction
         double maxPixels = Math.max(screenHeight, screenWidth);
         double maxDensityPixels = maxPixels / density;
 
@@ -211,24 +178,113 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
     }
 
     //Handle Map activity
+    //Pin managment
     @Override
     public void onCameraMove() {
-        float distanceMoved = distanceBetweenLatLngs(lastUpdatePosition, gMap.getCameraPosition().target);
-        float distanceToRecalculate = mapSizeMeters(lastUpdateZoom)/3;
-        float zoomChange = Math.abs(gMap.getCameraPosition().zoom - lastUpdateZoom);
+            attemptGetPins();
+    }
+    private void attemptGetPins(){
+        //If we are not searching for pins, and we have moved enough, look for pins again
+        //Called when camera moves, or when a search finishes.
+        if(!searchingForPins){
+            float distanceMoved = distanceBetweenLatLngs(lastUpdatePosition, gMap.getCameraPosition().target);
+            float distanceToRecalculate = mapSizeMeters(lastUpdateZoom)/3;
+            float zoomChange = Math.abs(gMap.getCameraPosition().zoom - lastUpdateZoom);
 
-        Log.d("MapUpdate", Float.toString(distanceMoved));
-        Log.d("MapUpdate", Float.toString(distanceToRecalculate));
-
-        if(lastUpdatePosition == null){
-            getPins();
-        }
-        else if( distanceMoved > distanceToRecalculate || zoomChange > 0.5){
-            getPins();
+            if(lastUpdatePosition == null){
+                getPins();
+            }
+            else if( distanceMoved > distanceToRecalculate || zoomChange > 0.5){
+                getPins();
+            }
         }
     }
+    private void getPins(){
+        lastUpdateZoom = gMap.getCameraPosition().zoom;
+        lastUpdatePosition = gMap.getCameraPosition().target;
+        final GeoLocation queryLocation = new GeoLocation(lastUpdatePosition.latitude, lastUpdatePosition.longitude);
+
+        Log.d("MapUpdate", "Updating Pins");
+
+        //Prepare to search for pins
+        searchingForPins = true;
+        queriesInProgress = 0;
+
+        //TODO: Geohash, get keys for all pins in the area and draw them
+        Log.d("GeoHashTest", App.s.geoFire.getDatabaseReference().getKey());
+        App.s.geoFire.queryAtLocation(queryLocation, mapSizeMeters(lastUpdateZoom) / 1000).addGeoQueryEventListener(new GeoQueryEventListener() {
+            @Override
+            public void onKeyEntered(String key, GeoLocation location) {
+                Log.d("GeoHashTest", key);
+
+                queriesInProgress ++;
+                App.s.fDatabase.child("pins").orderByKey().equalTo(key).addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        for(DataSnapshot snapshot: dataSnapshot.getChildren()){
+                            Log.d("GeoHashTest", "Test2");
+                            newPins.add(snapshot.getValue(Pin.class));
+                            queriesInProgress--;
+                            if(queriesInProgress == 0){
+                                placePins();
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+                        queriesInProgress--;
+                        if(queriesInProgress == 0){
+                            placePins();
+                        }
+                    }
+                });
+            }
+
+            @Override
+            public void onGeoQueryReady() {
+                Log.d("Geohash", "Done!");
+                if(queriesInProgress == 0){
+                    placePins();
+                }
+            }
+
+            //Unused
+            @Override
+            public void onKeyExited(String key) {}
+            @Override
+            public void onKeyMoved(String key, GeoLocation location) {}
+            @Override
+            public void onGeoQueryError(DatabaseError error) {}
+        });
+    }
+    private void placePins(){
+        clearPins();
+        for (int i = 0; i < newPins.size(); i++){
+            placePin(newPins.get(i));
+        }
+        newPins.clear();
+        searchingForPins = false;
+        attemptGetPins();
+    }
+    private void placePin(Pin pin){
+        Log.d("GeoHashTest", "test3");
+        Marker newMarker = gMap.addMarker(new MarkerOptions()
+                .position(new LatLng(pin.lat, pin.lng))
+                .title(pin.title));
+        newMarker.setTag(pin);
+        pins.add(newMarker);
+    }
+    private void clearPins(){
+        //When we search for new pins, we clear the old ones
+        for(int i = 0; i < pins.size(); i++){
+            pins.get(i).remove();
+        }
+        pins.clear();
+    }
+
     @Override
-    public void onMapClick(final LatLng latLng) {
+    public void onMapClick(final LatLng clickLatlng) {
         //When we click the map, attempt to place a marker.
         // Need to be logged in, have location permissions, be within x distance from our marker, need to be zoomed enough
         final float zoom = gMap.getCameraPosition().zoom;
@@ -242,17 +298,17 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
                 try {
                     App.s.gLocationClient.getLastLocation().addOnSuccessListener(new OnSuccessListener<Location>() {
                         @Override
-                        public void onSuccess(final Location location) {
-                            final LatLng locationLatLng = new LatLng(location.getLatitude(), location.getLongitude());
-                            float distance = distanceBetweenLatLngs(locationLatLng, latLng);
+                        public void onSuccess(final Location userLocation) {
+                            final LatLng userLatlng = new LatLng(userLocation.getLatitude(), userLocation.getLongitude());
+                            float distance = distanceBetweenLatLngs(userLatlng, clickLatlng);
 
-                            Log.d("Test1", "Distance: " + distance + " Latlng1: " + locationLatLng.latitude + " " + locationLatLng.longitude + " Latlng2: " + latLng.latitude + " " + latLng.longitude);
+                            Log.d("Test1", "Distance: " + distance + " Latlng1: " + userLatlng.latitude + " " + userLatlng.longitude + " Latlng2: " + clickLatlng.latitude + " " + clickLatlng.longitude);
                             //Must be within X meters of the pin you are placing
                             if(distance < PIN_PLACE_MAX_DISTANCE){
                                 if(zoom >= PIN_PLACE_MIN_ZOOM){
                                     pinsInArea = 0;
                                     //Must be farther than X meters from other pins
-                                    geoFire.queryAtLocation(new GeoLocation(location.getLatitude(), location.getLongitude()), PIN_MIN_SPACING).addGeoQueryEventListener(new GeoQueryEventListener() {
+                                    App.s.geoFire.queryAtLocation(new GeoLocation(clickLatlng.latitude, clickLatlng.longitude), PIN_MIN_SPACING / 1000f).addGeoQueryEventListener(new GeoQueryEventListener() {
                                         @Override
                                         public void onKeyEntered(String key, GeoLocation location) {
                                             pinsInArea += 1;
@@ -261,10 +317,10 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
                                         @Override
                                         public void onGeoQueryReady() {
                                             App.s.dismissProgress();
-                                            if(pinsInArea > 1){
-                                                App.s.toast("Please place pins at least 10 meters from any active pins!");
+                                            if(pinsInArea > 0){
+                                                App.s.toast("Please place pins at least " + PIN_MIN_SPACING + " meters from any active pins!");
                                             } else{
-                                                attemptPlaceMarker(latLng);
+                                                attemptPlaceMarker(clickLatlng);
                                             }
                                         }
 
@@ -308,13 +364,14 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
         App.s.newPinCoords = location;
 
         //Move to the clicked spot, and place a temp marker there
-        moveCam(location.latitude, location.longitude, PIN_PLACE_MIN_ZOOM, true);
+        moveCam(location.latitude, location.longitude, gMap.getCameraPosition().zoom, false);
         App.s.tempMarker = gMap.addMarker(new MarkerOptions().position(location).title("TestMarker"));
         PlacePinDialog placePinDialog = new PlacePinDialog();
         FragmentTransaction ft = getFragmentManager().beginTransaction();
         placePinDialog.show(ft, "Test");
     }
 
+    //Map functions
     @Override
     public boolean onMarkerClick(Marker marker) {
         return false;
@@ -333,6 +390,17 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
     public void onResume() {
         super.onResume();
         mMapView.onResume();
+
+        //Reset our variables
+        lastUpdatePosition = new LatLng(0,0);
+        lastUpdateZoom = 0;
+        searchingForPins = false;
+        queriesInProgress = 0;
+        pins = new ArrayList<>();
+        newPins = new ArrayList<>();
+        if(gMap != null){
+            getPins();
+        }
     }
     @Override
     public void onPause() {

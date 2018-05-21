@@ -2,6 +2,7 @@ package com.tjt.communityapp;
 
 import android.app.Fragment;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -52,11 +53,18 @@ public class CreatePinFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.content_create_pin, container, false);
         getActivity().setTitle("Create Event");
 
+        //Get our views
         titleView = rootView.findViewById(R.id.createEventTitle);
         descriptionView = rootView.findViewById(R.id.createDescription);
         datePickerView = rootView.findViewById(R.id.createDate);
         startTimeView = rootView.findViewById(R.id.createStartTime);
         endTimeView = rootView.findViewById(R.id.createEndTime);
+
+        //Set the min/max date for the datepicker
+        final long minDate = new Date().getTime();
+        final long maxDate = minDate + TimeUnit.DAYS.toMillis(MAX_DAYS_BEFORE_EVENT - 1);
+        datePickerView.setMinDate(minDate);
+        datePickerView.setMaxDate(maxDate);
 
         //The button cant find the function that is in a fragment.
         // Instead, set it to call the attemptCreateEvent function when clicked here in code
@@ -138,6 +146,8 @@ public class CreatePinFragment extends Fragment {
 
         //Store our pins kew and latlang in geofire
         GeoLocation pinLocation = new GeoLocation(event.lat, event.lng);
+
+        Log.d("GeofireTest", App.s.geoFire.getDatabaseReference().getKey());
         App.s.geoFire.setLocation(newPinLocation.getKey(), pinLocation, new GeoFire.CompletionListener() {
             @Override
             public void onComplete(String key, DatabaseError error) {
