@@ -35,11 +35,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        App.s.currentActivity = this;
+
         navBarSetup();
 
         //Start with the map open, set it checked in the NavDrawer
-        changeFragment(new MapFragment());
-        MenuItem mapMenuItem = findViewById(R.id.nav_maps);
+        changeFragment(new MapFragment(), true);
 
         //If we don't have location permissions
         ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.ACCESS_COARSE_LOCATION},
@@ -74,15 +75,17 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         drawer.closeDrawer(GravityCompat.START);
 
         if (id == R.id.nav_maps) {
-            changeFragment(new MapFragment());
+            changeFragment(new MapFragment(), true);
         } else if (id == R.id.nav_personal) {
-            changeFragment(new PersonalPageFragment());
+            changeFragment(new PersonalPageFragment(), true);
         } else if (id == R.id.nav_communities) {
+            changeFragment(new CommunitiesFragment(), true);
         } else if (id == R.id.nav_filters) {
+            changeFragment(new FiltersFragment(), true);
         }else if (id == R.id.nav_options) {
-            changeFragment(new OptionsFragment());
+            changeFragment(new OptionsFragment(), true);
         }else if (id == R.id.nav_news) {
-            changeFragment(new OptionsFragment());
+            changeFragment(new NewsFragment(), true);
         }else if (id == R.id.nav_logout) {
             App.s.logout();
         }
@@ -91,19 +94,31 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     //Swaps out the fragment we are seeing
-    private void changeFragment(Fragment fragment){
+    public void changeFragment(Fragment fragment, boolean resetStack){
         FragmentManager fragmentManager = getFragmentManager();
         FragmentTransaction ft = fragmentManager.beginTransaction();
+
+        if(resetStack){
+            for(int i = 0; i < fragmentManager.getBackStackEntryCount(); i++) {
+                fragmentManager.popBackStack();
+            }
+        }
+        ft.addToBackStack(null);
+
         ft.replace(R.id.content_frame, fragment);
         ft.commit();
     }
+    private void addFragment(Fragment fragment){
+
+    }
 
     //When we press back, close the drawer, if it is closed, logout.
-    //TODO: Pressing back returns us to the main tab of the navDrawer
     @Override
     public void onBackPressed() {
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
+        } else if(getFragmentManager().getBackStackEntryCount() == 1){
+            App.s.logout();
         } else {
             super.onBackPressed();
         }

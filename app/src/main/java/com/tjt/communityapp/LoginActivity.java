@@ -4,6 +4,7 @@ import android.app.FragmentTransaction;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 
@@ -23,6 +24,8 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        App.s.currentActivity = this;
+
         App.s.toast("Welcome!");
 
         usernameView = findViewById(R.id.enterEmail);
@@ -61,6 +64,8 @@ public class LoginActivity extends AppCompatActivity {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 App.s.currentUser = dataSnapshot.getValue(User.class);
                 App.s.dismissProgress();
+
+                Log.d("Test", App.s.currentUser.getName());
 
                 App.s.toast("Login success. Welcome " + App.s.fAuth.getCurrentUser().getEmail() + "!");
                 App.s.setActivity(MainActivity.class);

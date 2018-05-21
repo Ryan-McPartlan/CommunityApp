@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                style="@style/defaultStyle"
+                android:text="Event Title"/>
+
+            <EditText
+                android:id="@+id/createEventTitle"
+                style="@style/defaultStyle"
+                android:hint="Event Title"
+                android:maxLength="60"/>
+
+            <TextView
+                style="@style/defaultStyle"
+                android:text="Event Description"/>
+
+            <EditText
+                android:id="@+id/createDescription"
+                style="@style/defaultStyle"
+                android:hint="Description. Include organizer contact info, what you will be doing, who is organizing the event, what people should bring, what to do when you arrive ect."
+                android:maxLength="2000"
+                android:text="Laurem ipsem sample description this is so we dont have to type 30 characters to test making pins"/>
+
+            <TextView
+                style="@style/defaultStyle"
+                android:text="Date"/>
+
+            <DatePicker
+                android:id="@+id/createDate"
+                style="@style/defaultStyle"
+                android:datePickerMode="spinner"
+                android:calendarViewShown="false"/>
+
+            <TextView
+                style="@style/defaultStyle"
+                android:text="Start Time"/>
+
+            <TimePicker
+                android:id="@+id/createStartTime"
+                style="@style/defaultStyle"
+                android:tooltipText="Start Time"
+                android:timePickerMode="spinner"/>
+
+            <TextView
+                style="@style/defaultStyle"
+                android:text="End Time"/>
+
+            <TimePicker
+                android:id="@+id/createEndTime"
+                style="@style/defaultStyle"
+                android:tooltipText="End Time"
+                android:timePickerMode="spinner"/>
+            
+            <Button
+                android:id="@+id/createPinButton"
+                style="@style/defaultStyle"
+                android:text="Create!"/>
+
+        </LinearLayout>
+    </ScrollView>
+</android.support.constraint.ConstraintLayout>

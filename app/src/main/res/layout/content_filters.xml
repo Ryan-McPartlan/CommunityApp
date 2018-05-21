@@ -1,6 +1,76 @@
-<?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
     android:layout_height="match_parent">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <TextView
+                style="@style/defaultStyle"
+                android:text="Pin Categories"/>
+            <Switch
+                style="@style/defaultStyle"
+                android:text="Environmental"/>
+            <Switch
+                style="@style/defaultStyle"
+                android:text="Social"/>
+            <Switch
+                style="@style/defaultStyle"
+                android:text="Civil"/>
+            <Switch
+                style="@style/defaultStyle"
+                android:text="Political"/>
+            <Switch
+                style="@style/defaultStyle"
+                android:text="Educational"/>
+            <Switch
+                style="@style/defaultStyle"
+                android:text="Humanitarian"/>
+            <Switch
+                style="@style/defaultStyle"
+                android:text="Other"/>
+
+            <TextView
+                style="@style/defaultStyle"
+                android:text="Event Time"/>
+            <Switch
+                style="@style/defaultStyle"
+                android:text="In progress events"/>
+            <TextView
+                style="@style/defaultStyle"
+                android:text="Do not show events that start more than this many days from now:"/>
+            <EditText
+                style="@style/defaultStyle"
+                android:hint="Days"
+                android:inputType="number"
+                android:maxLength="2"/>
+
+
+            <TextView
+                style="@style/defaultStyle"
+                android:text="Interactions"/>
+            <Switch
+                style="@style/defaultStyle"
+                android:text="Events I am attending"/>
+            <Switch
+                style="@style/defaultStyle"
+                android:text="Events I am organizing"/>
+            <Switch
+                style="@style/defaultStyle"
+                android:text="Events I have checked"/>
+            <Switch
+                style="@style/defaultStyle"
+                android:text="Events I have seen"/>
+            <Switch
+                style="@style/defaultStyle"
+                android:text="Events I have not seen"/>
+        </LinearLayout>
+    </ScrollView>
 
 </android.support.constraint.ConstraintLayout>

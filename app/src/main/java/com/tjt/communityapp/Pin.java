@@ -10,22 +10,23 @@ public class Pin {
     public Pin(){}
 
     public String title;
-    public long lat;
-    public long lon;
+    public double lat;
+    public double lng;
     public boolean isActive;
     public boolean testPin;
-    public HashMap<String, Boolean> organizers;
+    public HashMap<String, Boolean> organizers; //IDs for users running the event
+    public HashMap<String, Boolean> sponsors; //IDs for communities running the event
     public int support;
     public HashMap<String, Boolean> supporters;
 
     public String getTitle() {
         return title;
     }
-    public long getLat() {
+    public double getLat() {
         return lat;
     }
-    public long getLon() {
-        return lon;
+    public double getLng() {
+        return lng;
     }
     public boolean isActive() {
         return isActive;
@@ -36,6 +37,7 @@ public class Pin {
     public HashMap<String, Boolean> getOrganizers() {
         return organizers;
     }
+    public HashMap<String, Boolean> getSponsors() {return sponsors;}
     public int getSupport() {
         return support;
     }

@@ -1,6 +1,53 @@
-<?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
     android:layout_height="match_parent">
+
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <Button
+                android:id="@+id/prevButton"
+                style="@style/defaultStyle"
+                android:layout_width="wrap_content"
+                android:text="Previous news"/>
+            <Button
+                android:id="@+id/nextButton"
+                style="@style/defaultStyle"
+                android:layout_width="wrap_content"
+                android:text="Next news"
+                android:enabled="false"/>
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/newsTitle"
+            style="@style/defaultStyle"
+            android:text="A few new features and other news"/>
+        <TextView
+            android:id="@+id/newsDate"
+            style="@style/defaultStyle"
+            android:text="May 16th, 2018"/>
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fillViewport="true">
+
+            <TextView
+                android:id="@+id/newsContent"
+                style="@style/defaultStyle"
+                android:text="Paul smells absolutely terrible. Its actually extremely disturbing I don't know how its even possible that he smells this bad. \n\n\n\n\n\n\n\n Laurem ipsem blag \n\n\n\ poop shoom n \n\n\ n\ \n \\ n\ \n\n\ n\\n\n \ test more tests im still ntesting test test all day long this is a long story arjeorhgierogheorgorie test test I cant believe this story is still goin on wow does the eveloper know hiow to be conscie sor what just get to the punchline is this really nevvesrtryl for what"/>
+
+        </ScrollView>
+
+    </LinearLayout>
 
 </android.support.constraint.ConstraintLayout>

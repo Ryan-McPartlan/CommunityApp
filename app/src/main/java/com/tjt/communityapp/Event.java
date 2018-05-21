@@ -12,30 +12,15 @@ public class Event extends Pin {
     public String description;
     public String meetingAdress;
     public HashMap<String, Boolean> participants; //Strings are the users IDs
-    public String sponsor; //ID for a community that has been deemed in charge by someone who is an admin in that community and
+
     public long startDate;
     public long endDate; //Convert these to dates when trying to use them, only long when stored.
     public HashMap<String, Boolean> tags;
 
-    public String getDescription(){
-        return description;
-    }
-    public String getMeetingAdress() {
-        return meetingAdress;
-    }
-    public HashMap<String, Boolean> getParticipants() {
-        return participants;
-    }
-    public String getSponsor() {
-        return sponsor;
-    }
-    public long getStartDate() {
-        return startDate;
-    }
-    public long getEndDate() {
-        return endDate;
-    }
-    public HashMap<String, Boolean> getTags() {
-        return tags;
-    }
+    public String getDescription(){return description;}
+    public String getMeetingAdress() {return meetingAdress;}
+    public HashMap<String, Boolean> getParticipants() {return participants;    }
+    public long getStartDate() {return startDate;}
+    public long getEndDate() {        return endDate;}
+    public HashMap<String, Boolean> getTags() {return tags;}
 }
