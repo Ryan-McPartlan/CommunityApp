@@ -395,7 +395,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
         lastUpdatePosition = new LatLng(0,0);
         lastUpdateZoom = 0;
         searchingForPins = false;
-        queriesInProgress = 0;
+        queriesInProgress = 0; 
         pins = new ArrayList<>();
         newPins = new ArrayList<>();
         if(gMap != null){
